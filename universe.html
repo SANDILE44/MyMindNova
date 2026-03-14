@@ -1,121 +1,106 @@
-const canvas = document.getElementById("galaxy");
-const ctx = canvas.getContext("2d");
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>MyMindNova Universe</title>
 
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+<style>
 
-const centerX = canvas.width / 2;
-const centerY = canvas.height / 2;
+body{
+margin:0;
+overflow:hidden;
+background:black;
+font-family:Arial, sans-serif;
+color:white;
+}
 
-/* GALAXY PARTICLES */
+/* galaxy canvas */
 
-let particles = [];
+canvas{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+z-index:0;
+}
 
-for (let i = 0; i < 800; i++) {
+/* center container */
 
-particles.push({
-angle: Math.random() * Math.PI * 2,
-radius: Math.random() * 600,
-speed: 0.0005 + Math.random() * 0.002,
-size: Math.random() * 2
-});
+.center{
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+text-align:center;
+z-index:2;
+width:80%;
+max-width:700px;
+}
+
+/* focus circle */
+
+.circle{
+width:220px;
+height:220px;
+border-radius:50%;
+border:2px solid rgba(0,200,255,0.7);
+margin:auto;
+box-shadow:
+0 0 20px rgba(0,200,255,0.8),
+0 0 60px rgba(0,200,255,0.4);
+animation:pulse 4s infinite;
+}
+
+/* affirmation */
+
+.text{
+margin-top:30px;
+font-size:26px;
+font-weight:300;
+letter-spacing:1px;
+opacity:0;
+transition:opacity 2s;
+}
+
+/* orbit images */
+
+.orbit-img{
+position:absolute;
+width:90px;
+height:90px;
+border-radius:12px;
+object-fit:cover;
+border:2px solid #00d4ff;
+box-shadow:0 0 12px rgba(0,200,255,0.7);
+}
+
+/* pulse animation */
+
+@keyframes pulse{
+
+0%{ transform:scale(1); }
+50%{ transform:scale(1.05); }
+100%{ transform:scale(1); }
 
 }
 
-function animate(){
+</style>
+</head>
 
-ctx.fillStyle = "rgba(0,0,0,0.15)";
-ctx.fillRect(0,0,canvas.width,canvas.height);
+<body>
 
-particles.forEach(p => {
+<canvas id="galaxy"></canvas>
 
-p.angle += p.speed;
+<div class="center">
 
-let x = centerX + Math.cos(p.angle) * p.radius;
-let y = centerY + Math.sin(p.angle) * p.radius;
+<div class="circle"></div>
 
-ctx.fillStyle = "white";
-ctx.fillRect(x, y, p.size, p.size);
+<div id="affirmation" class="text"></div>
 
-});
+</div>
 
-requestAnimationFrame(animate);
+<script src="universe.js"></script>
 
-}
-
-animate();
-
-
-/* ======================================
-   DESCRIPTION → AFFIRMATIONS ENGINE
-====================================== */
-
-let goal = localStorage.getItem("goalText") || "";
-
-goal = goal.replace(/\n/g," ").trim();
-
-/* break paragraph into sentences */
-
-let sentences = goal.split(/[.!?]/).filter(s => s.trim().length > 4);
-
-/* generate affirmations */
-
-let affirmations = [];
-
-sentences.forEach(sentence => {
-
-let clean = sentence.trim();
-
-/* transform sentence */
-
-let affirmation =
-"I am creating " + clean.toLowerCase();
-
-affirmations.push(affirmation);
-
-});
-
-/* if user wrote only one line */
-
-if(affirmations.length < 3){
-
-affirmations.push(
-"My vision is becoming reality.",
-"My focus builds my future.",
-"I move closer to my goals every day."
-);
-
-}
-
-
-/* ======================================
-   AFFIRMATION ROTATION
-====================================== */
-
-const textElement = document.getElementById("affirmation");
-
-let index = 0;
-
-function showAffirmation(){
-
-textElement.style.opacity = 0;
-
-setTimeout(()=>{
-
-textElement.textContent = affirmations[index];
-
-textElement.style.opacity = 1;
-
-index++;
-
-if(index >= affirmations.length){
-index = 0;
-}
-
-},1200);
-
-}
-
-showAffirmation();
-
-setInterval(showAffirmation,7000);
+</body>
+</html>
