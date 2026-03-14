@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>My Universe Vision</title>
+
+<style>
+
+body{
+margin:0;
+font-family:Arial, sans-serif;
+color:white;
+background:black;
+overflow:hidden;
+}
+
+/* star canvas */
+#stars{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+z-index:0;
+}
+
+/* main container */
+.container{
+position:relative;
+z-index:2;
+max-width:700px;
+margin:auto;
+margin-top:80px;
+padding:30px;
+background:rgba(0,0,0,0.6);
+border-radius:20px;
+box-shadow:0 0 40px rgba(0,150,255,0.4);
+backdrop-filter:blur(6px);
+}
+
+h1{
+text-align:center;
+font-weight:300;
+letter-spacing:2px;
+margin-bottom:20px;
+}
+
+/* textarea */
+
+textarea{
+width:100%;
+height:120px;
+padding:15px;
+border-radius:12px;
+border:none;
+outline:none;
+font-size:16px;
+background:#050b18;
+color:white;
+box-shadow:0 0 10px rgba(0,150,255,0.5);
+}
+
+/* upload */
+
+.upload{
+margin-top:20px;
+}
+
+/* button */
+
+button{
+margin-top:25px;
+width:100%;
+padding:15px;
+font-size:18px;
+border:none;
+border-radius:12px;
+cursor:pointer;
+background:linear-gradient(45deg,#3f7cff,#00d4ff);
+color:white;
+font-weight:bold;
+letter-spacing:1px;
+transition:0.3s;
+}
+
+button:hover{
+transform:scale(1.03);
+box-shadow:0 0 20px #00d4ff;
+}
+
+/* preview images */
+
+.preview{
+margin-top:15px;
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+}
+
+.preview img{
+width:80px;
+height:80px;
+object-fit:cover;
+border-radius:10px;
+border:1px solid #00d4ff;
+}
+
+</style>
+</head>
+
+<body>
+
+<canvas id="stars"></canvas>
+
+<div class="container">
+
+<h1>Create Your Universe</h1>
+
+<p>Describe the future you want:</p>
+
+<textarea id="goalText" placeholder="Example: I build a successful SaaS business, attract many clients, and create financial freedom..."></textarea>
+
+<div class="upload">
+<p>Upload images of your goals:</p>
+<input type="file" id="imageUpload" multiple accept="image/*">
+</div>
+
+<div class="preview" id="preview"></div>
+
+<button onclick="generate()">Generate My Universe</button>
+
+</div>
+
+<script>
+
+/* star background */
+
+const canvas = document.getElementById("stars");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let stars = [];
+
+for(let i=0;i<200;i++){
+stars.push({
+x:Math.random()*canvas.width,
+y:Math.random()*canvas.height,
+size:Math.random()*2
+});
+}
+
+function animate(){
+ctx.fillStyle="black";
+ctx.fillRect(0,0,canvas.width,canvas.height);
+
+ctx.fillStyle="white";
+
+stars.forEach(s=>{
+ctx.beginPath();
+ctx.arc(s.x,s.y,s.size,0,Math.PI*2);
+ctx.fill();
+
+s.y+=0.2;
+
+if(s.y>canvas.height){
+s.y=0;
+s.x=Math.random()*canvas.width;
+}
+});
+
+requestAnimationFrame(animate);
+}
+
+animate();
+
+/* image preview */
+
+const upload = document.getElementById("imageUpload");
+const preview = document.getElementById("preview");
+
+upload.addEventListener("change",()=>{
+
+preview.innerHTML="";
+
+[...upload.files].forEach(file=>{
+
+const reader = new FileReader();
+
+reader.onload = function(e){
+
+const img = document.createElement("img");
+img.src = e.target.result;
+preview.appendChild(img);
+
+};
+
+reader.readAsDataURL(file);
+
+});
+
+});
+
+/* generate */
+
+function generate(){
+
+const text = document.getElementById("goalText").value;
+
+localStorage.setItem("goalText",text);
+
+alert("Universe created. Next page will visualize your goals.");
+
+}
+
+</script>
+
+</body>
+</html>
