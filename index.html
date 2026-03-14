@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>My Universe Vision</title>
+<title>MyMindNova</title>
 
 <style>
 
@@ -14,7 +14,8 @@ background:black;
 overflow:hidden;
 }
 
-/* star canvas */
+/* star background */
+
 #stars{
 position:fixed;
 top:0;
@@ -24,7 +25,8 @@ height:100%;
 z-index:0;
 }
 
-/* main container */
+/* container */
+
 .container{
 position:relative;
 z-index:2;
@@ -32,16 +34,18 @@ max-width:700px;
 margin:auto;
 margin-top:80px;
 padding:30px;
-background:rgba(0,0,0,0.6);
+background:rgba(0,0,0,0.65);
 border-radius:20px;
 box-shadow:0 0 40px rgba(0,150,255,0.4);
 backdrop-filter:blur(6px);
 }
 
+/* title */
+
 h1{
 text-align:center;
-font-weight:300;
 letter-spacing:2px;
+font-weight:300;
 margin-bottom:20px;
 }
 
@@ -49,7 +53,7 @@ margin-bottom:20px;
 
 textarea{
 width:100%;
-height:120px;
+height:130px;
 padding:15px;
 border-radius:12px;
 border:none;
@@ -57,7 +61,7 @@ outline:none;
 font-size:16px;
 background:#050b18;
 color:white;
-box-shadow:0 0 10px rgba(0,150,255,0.5);
+box-shadow:0 0 12px rgba(0,150,255,0.6);
 }
 
 /* upload */
@@ -93,8 +97,8 @@ box-shadow:0 0 20px #00d4ff;
 .preview{
 margin-top:15px;
 display:flex;
-gap:10px;
 flex-wrap:wrap;
+gap:10px;
 }
 
 .preview img{
@@ -114,15 +118,19 @@ border:1px solid #00d4ff;
 
 <div class="container">
 
-<h1>Create Your Universe</h1>
+<h1>MyMindNova</h1>
 
 <p>Describe the future you want:</p>
 
-<textarea id="goalText" placeholder="Example: I build a successful SaaS business, attract many clients, and create financial freedom..."></textarea>
+<textarea id="goalText"
+placeholder="Example: I build a successful SaaS business, attract many clients, and achieve financial freedom..."></textarea>
 
 <div class="upload">
+
 <p>Upload images of your goals:</p>
+
 <input type="file" id="imageUpload" multiple accept="image/*">
+
 </div>
 
 <div class="preview" id="preview"></div>
@@ -143,21 +151,25 @@ canvas.height = window.innerHeight;
 
 let stars = [];
 
-for(let i=0;i<200;i++){
+for(let i=0;i<250;i++){
+
 stars.push({
 x:Math.random()*canvas.width,
 y:Math.random()*canvas.height,
 size:Math.random()*2
 });
+
 }
 
 function animate(){
+
 ctx.fillStyle="black";
 ctx.fillRect(0,0,canvas.width,canvas.height);
 
 ctx.fillStyle="white";
 
 stars.forEach(s=>{
+
 ctx.beginPath();
 ctx.arc(s.x,s.y,s.size,0,Math.PI*2);
 ctx.fill();
@@ -168,21 +180,26 @@ if(s.y>canvas.height){
 s.y=0;
 s.x=Math.random()*canvas.width;
 }
+
 });
 
 requestAnimationFrame(animate);
+
 }
 
 animate();
 
-/* image preview */
+/* preview images */
 
 const upload = document.getElementById("imageUpload");
 const preview = document.getElementById("preview");
 
+let images = [];
+
 upload.addEventListener("change",()=>{
 
 preview.innerHTML="";
+images = [];
 
 [...upload.files].forEach(file=>{
 
@@ -190,8 +207,11 @@ const reader = new FileReader();
 
 reader.onload = function(e){
 
+images.push(e.target.result);
+
 const img = document.createElement("img");
 img.src = e.target.result;
+
 preview.appendChild(img);
 
 };
@@ -202,15 +222,16 @@ reader.readAsDataURL(file);
 
 });
 
-/* generate */
+/* generate universe */
 
 function generate(){
 
 const text = document.getElementById("goalText").value;
 
 localStorage.setItem("goalText",text);
+localStorage.setItem("goalImages",JSON.stringify(images));
 
-alert("Universe created. Next page will visualize your goals.");
+window.location.href="universe.html";
 
 }
 
