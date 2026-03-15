@@ -74,6 +74,15 @@ transition:opacity 2s;
 max-width:600px;
 }
 
+.orbit-img{
+width:70px;
+height:70px;
+object-fit:cover;
+border-radius:10px;
+border:2px solid #00d4ff;
+box-shadow:0 0 12px rgba(0,200,255,0.7);
+}
+
 /* PULSE ANIMATION */
 
 @keyframes pulse{
