@@ -1,7 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>MyMindNova</title>
 
 <link rel="stylesheet" href="style.css">
@@ -10,33 +15,47 @@
 
 <body>
 
+<!-- STAR BACKGROUND -->
 <canvas id="stars"></canvas>
 
+<!-- MAIN UI -->
 <div class="container">
 
 <h1>MyMindNova</h1>
 
 <p>Describe the future you want:</p>
 
-<textarea id="goalText"
-placeholder="Example: I build a successful SaaS business, attract many clients, and achieve financial freedom..."></textarea>
+<textarea 
+id="goalText"
+placeholder="Example: I build a successful SaaS business, attract many clients, achieve financial freedom, and become a powerful leader.">
+</textarea>
 
 <div class="upload">
 
 <p>Upload images of your goals:</p>
 
-<input type="file" id="imageUpload" multiple accept="image/*">
+<input 
+type="file" 
+id="imageUpload" 
+multiple 
+accept="image/*">
 
 </div>
 
+<!-- IMAGE PREVIEW -->
 <div class="preview" id="preview"></div>
 
-<button id="generateBtn">Generate My Universe</button>
+<button id="generateBtn">
+Generate My Universe
+</button>
 
 </div>
 
-<script src="app.js"></script>
-<script src="music.js"></script>
+<!-- SCRIPTS -->
+
+<script src="app.js" defer></script>
+<script src="music.js" defer></script>
 
 </body>
+
 </html>
