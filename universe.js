@@ -22,45 +22,75 @@ window.addEventListener("resize", resizeCanvas);
 
 
 /* ======================
-   GALAXY PARTICLES
+   GALAXY PARTICLES (UPGRADED)
 ====================== */
 
 let particles = [];
 
-for(let i=0;i<600;i++){   // reduced for performance
+const particleCount = 700;
+
+for(let i=0;i<particleCount;i++){
+
+let distance = Math.random()*500;
+let angle = Math.random()*Math.PI*2;
+
+/* spiral arm effect */
+
+angle += distance * 0.002;
 
 particles.push({
-angle:Math.random()*Math.PI*2,
-radius:Math.random()*500,
-speed:0.0005 + Math.random()*0.002,
-size:Math.random()*2
+
+angle:angle,
+radius:distance,
+
+speed:0.0004 + Math.random()*0.0015,
+
+size:Math.random()*2 + 0.3,
+
+depth:Math.random()
+
 });
 
 }
 
+
 function animate(){
 
-ctx.fillStyle="rgba(0,0,0,0.2)";
+ctx.fillStyle="rgba(0,0,0,0.25)";
 ctx.fillRect(0,0,canvas.width,canvas.height);
 
 particles.forEach(p=>{
 
 p.angle += p.speed;
 
-let x = centerX + Math.cos(p.angle)*p.radius;
-let y = centerY + Math.sin(p.angle)*p.radius;
+/* parallax movement */
 
-ctx.fillStyle="white";
-ctx.fillRect(x,y,p.size,p.size);
+let r = p.radius * (0.7 + p.depth*0.6);
+
+let x = centerX + Math.cos(p.angle)*r;
+let y = centerY + Math.sin(p.angle)*r;
+
+/* glow effect */
+
+ctx.beginPath();
+ctx.arc(x,y,p.size,0,Math.PI*2);
+
+let glow = ctx.createRadialGradient(
+x,y,0,
+x,y,p.size*4
+);
+
+glow.addColorStop(0,"white");
+glow.addColorStop(1,"transparent");
+
+ctx.fillStyle = glow;
+ctx.fill();
 
 });
 
 requestAnimationFrame(animate);
 
 }
-
-animate();
-
 
 /* ======================
    DESCRIPTION ENGINE
