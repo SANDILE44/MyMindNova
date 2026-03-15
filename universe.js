@@ -1,11 +1,25 @@
 const canvas = document.getElementById("galaxy");
 const ctx = canvas.getContext("2d");
 
+/* ======================
+   CANVAS SIZE
+====================== */
+
+function resizeCanvas(){
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-const centerX = canvas.width / 2;
-const centerY = canvas.height / 2;
+centerX = canvas.width / 2;
+centerY = canvas.height / 2;
+}
+
+let centerX;
+let centerY;
+
+resizeCanvas();
+
+window.addEventListener("resize", resizeCanvas);
+
 
 /* ======================
    GALAXY PARTICLES
@@ -13,12 +27,12 @@ const centerY = canvas.height / 2;
 
 let particles = [];
 
-for(let i=0;i<900;i++){
+for(let i=0;i<600;i++){   // reduced for performance
 
 particles.push({
 angle:Math.random()*Math.PI*2,
-radius:Math.random()*700,
-speed:0.0004 + Math.random()*0.002,
+radius:Math.random()*500,
+speed:0.0005 + Math.random()*0.002,
 size:Math.random()*2
 });
 
@@ -26,7 +40,7 @@ size:Math.random()*2
 
 function animate(){
 
-ctx.fillStyle="rgba(0,0,0,0.15)";
+ctx.fillStyle="rgba(0,0,0,0.2)";
 ctx.fillRect(0,0,canvas.width,canvas.height);
 
 particles.forEach(p=>{
@@ -56,15 +70,11 @@ let goal = localStorage.getItem("goalText") || "";
 
 goal = goal.replace(/\n/g," ").trim();
 
-/* split sentences */
-
-let sentences = goal.split(/[.!?]/).filter(s=>s.trim().length>4);
-
-/* generate affirmations */
+let sentences = goal.split(/[.!?]/).filter(s => s.trim().length > 4);
 
 let affirmations = [];
 
-sentences.forEach(s=>{
+sentences.forEach(s => {
 
 let clean = s.trim().toLowerCase();
 
@@ -72,8 +82,6 @@ affirmations.push("I am creating " + clean);
 affirmations.push("Every day I move closer to " + clean);
 
 });
-
-/* fallback */
 
 if(affirmations.length < 3){
 
@@ -117,7 +125,6 @@ index = 0;
 }
 
 showAffirmation();
-
 setInterval(showAffirmation,7000);
 
 
@@ -142,7 +149,10 @@ orbitImages.push({
 
 element:img,
 angle:Math.random()*Math.PI*2,
-radius:280 + (i*40),
+
+// keep orbit inside screen
+radius:180 + (i*35),
+
 speed:0.002 + Math.random()*0.002
 
 });
@@ -159,8 +169,10 @@ obj.angle += obj.speed;
 let x = centerX + Math.cos(obj.angle)*obj.radius;
 let y = centerY + Math.sin(obj.angle)*obj.radius;
 
-obj.element.style.left = x + "px";
-obj.element.style.top = y + "px";
+/* center image properly */
+
+obj.element.style.left = (x - 35) + "px";
+obj.element.style.top = (y - 35) + "px";
 
 });
 
